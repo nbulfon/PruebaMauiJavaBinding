@@ -1,0 +1,1 @@
+C:\code-Nicolas\PruebaMauiJavaBinding\PruebaMauiJavaBinding.csproj;x64

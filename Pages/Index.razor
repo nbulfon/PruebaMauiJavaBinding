@@ -1,0 +1,59 @@
+﻿@page "/";
+@using System.Reflection;
+
+<h1>Proyecto de prueba IMPRESION SUNMI</h1>
+
+<div>
+    <p>Para imprimir, clickea el botón</p>
+    <button @onclick="ImprimirTexto">Clickea acá para imprimir un texto</button>
+</div>
+
+<div>
+    <button @onclick="ImprimirImagen">Clickea acá para imprimir una imagen</button>
+</div>
+
+@code{
+
+    [Inject]
+    public Printer _printer { get; set; }
+
+    public void ImprimirTexto()
+    {
+        try
+        {
+            _printer.PrintText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sagittis, enim eget commodo dignissim, velit tortor condimentum justo, ac fermentum lectus sem non nisi. Vestibulum sed urna volutpat, ultrices massa in, aliquam metus. Maecenas ut enim at neque commodo dignissim. Sed eget vestibulum ex, id pharetra dolor. Suspendisse id dictum ex, at consequat neque. Nullam in velit vel sem aliquam gravida.");
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public void ImprimirImagen()
+    {
+        try
+        {
+            string imagePath = "Images/logo.jpg";
+            byte[] imageBytes;
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(imagePath))
+            {
+                if (stream != null)
+                {
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        stream.CopyTo(memoryStream);
+                        imageBytes = memoryStream.ToArray();
+                    }
+                }
+            }
+
+            //_printer.PrintImage(imageBytes);
+
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+}
