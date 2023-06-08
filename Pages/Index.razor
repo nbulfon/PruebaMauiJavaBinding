@@ -1,5 +1,7 @@
 ﻿@page "/";
 @using System.Reflection;
+@using Microsoft.Maui.Graphics.Platform;
+@using System.Text;
 
 <h1>Proyecto de prueba IMPRESION SUNMI</h1>
 
@@ -33,21 +35,31 @@
     {
         try
         {
-            string imagePath = "Images/logo.jpg";
-            byte[] imageBytes;
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(imagePath))
+            //Microsoft.Maui.Graphics.IImage image;
+
+            //Assembly assembly = GetType().GetTypeInfo().Assembly;
+            //using (Stream stream = assembly.GetManifestResourceStream("PruebaMauiJavaBinding.Resources.Images.logo.jpg"))
+            //{
+            //    image = PlatformImage.FromStream(stream);
+            //}
+
+            //byte[] imgEnBytes = Encoding.UTF8.GetBytes(image.AsBase64());
+            //_printer.PrintImage(imgEnBytes);
+
+            byte[] imgEnBytes;
+            Assembly assembly = GetType().GetTypeInfo().Assembly;
+            string resourceName = "PruebaMauiJavaBinding.Resources.Images.logo.jpg";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
-                if (stream != null)
+                using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    using (MemoryStream memoryStream = new MemoryStream())
-                    {
-                        stream.CopyTo(memoryStream);
-                        imageBytes = memoryStream.ToArray();
-                    }
+                    stream.CopyTo(memoryStream);
+                    imgEnBytes = memoryStream.ToArray();
                 }
             }
 
-            //_printer.PrintImage(imageBytes);
+            _printer.PrintImage(imgEnBytes);
 
         }
         catch (Exception ex)
@@ -55,5 +67,6 @@
             throw;
         }
     }
+    
 
 }
